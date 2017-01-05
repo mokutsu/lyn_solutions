@@ -1,15 +1,26 @@
 var http = require('http');
+var BufferList = require('bl');
+
 
 url = process.argv[2];
 
 function callback(response) {
-  response.on("error", function(err) {
-    console.log(err);
-    throw err;
-  })
-  response.on("data", function(data) {
-    console.log(data.toString().length);
-    console.log(data);
+  var statusCode = response.statusCode;
+  var contentType = response.headers['content-type'];
+
+  response.setEncoding('utf8');
+  var bl = new BufferList()
+  response.on('data', function(chunk) {
+    bl.append(chunk);
+  });
+
+  response.on("end", function(data) {
+    try {
+      console.log(bl.toString().length);
+      console.log(bl.toString());
+    } catch (e) {
+      console.log(e.message);
+    }
   })
 }
 

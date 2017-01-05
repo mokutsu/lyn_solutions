@@ -1,5 +1,6 @@
 var fs = require('fs');
 
+
 var folder = process.argv[2];
 var filetype = "." + process.argv[3];
 
