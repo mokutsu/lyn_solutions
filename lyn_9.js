@@ -1,38 +1,32 @@
 var http = require('http');
 var BufferList = require('bl');
+var async = require('async');
 
+function makeGetRequest(callback) {
+  http.get(this.url, function (resp) {
+    var rawData = '';
+    resp.on('data', function(chunk) {
+      rawData += chunk;
+    }).on('end', function(data) {
+      callback(null, rawData);
+    }).on('error', function (e) {
+      callback(e, 'error occurred');
+    });
+  });
+}
 
-url1 = process.argv[2];
-console.log(url1);
-url2 = process.argv[3];
-console.log(url2);
-url3 = process.argv[4];
-console.log(url3);
-
-function callback(url, response) {
-  var statusCode = response.statusCode;
-  var contentType = response.headers['content-type'];
-  var count = 2;
-
-  response.setEncoding('utf8');
-  var bl = new BufferList()
-  response.on('data', function(chunk) {
-    bl.append(chunk);
+function masterFunction() {
+  // console.log(process.argv);
+  var urls = process.argv.slice(2);
+  var urlFunctions = urls.map(function(url) {
+    return makeGetRequest.bind({url:url});
   });
 
-  response.on("end", function(data) {
-    try {
-      console.log(bl.toString().length);
-      console.log(bl.toString());
-    } catch (e) {
-      console.log(e.message);
-    }
-    if (count < 5) {
-      count += 1;
-      url = process.argv[count];
-      http.get(url, callback);
-    }
+  async.parallel(urlFunctions, function(err, results) {
+    results.forEach(function(result) {
+      console.log(result);
+    });
   })
 }
 
-http.get(url1, callback).on('error', console.error);
+masterFunction();
