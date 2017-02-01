@@ -2,7 +2,7 @@ var http = require('http');
 var BufferList = require('bl');
 var async = require('async');
 
-// This function takes
+// This function takes an argument, callback, given by the async library
 function makeGetRequest(callback) {
   http.get(this.url, function (resp) {
     var rawData = '';
@@ -22,7 +22,7 @@ function makeGetRequest(callback) {
 function masterFunction() {
   // only take the url command line arguments
   var urls = process.argv.slice(2);
-  // set up array of functions to loop over for use by async.parallel. In order to get the correct url for each callback function without actually executing it, bind the url as a named function 
+  // set up array of functions to loop over for use by async.parallel. In order to get the correct url for each callback function without actually executing it, bind the url as a named function
   var urlFunctions = urls.map(function(url) {
     return makeGetRequest.bind({url:url});
   });
