@@ -1,0 +1,21 @@
+{
+  "name": "@mokutsu/npmworkshopper",
+  "version": "2.1.0",
+  "description": "Testing creating a npm",
+  "main": "index.js",
+  "scripts": {
+    "test": "node test.js"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {},
+  "devDependencies": {},
+  "repository": {
+    "type": "git",
+    "url": "git+ssh://git@github.com/mokutsu/lyn_solutions.git"
+  },
+  "bugs": {
+    "url": "https://github.com/mokutsu/lyn_solutions/issues"
+  },
+  "homepage": "https://github.com/mokutsu/lyn_solutions#readme"
+}
